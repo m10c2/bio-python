@@ -1,80 +1,124 @@
 import requests
-from numpy import nan
 import re
+import matplotlib.pyplot as plt
+import numpy as np
+
 
 class Gene:
-    
-    def  __init__(self, url):
-        
-        resp = requests.get(url = url)
-        lines = resp.text.split('\n')
-        
-        self.entry = get_entry(self, lines)
-        self.organism = get_organism(self, lines)
-        self.motif = get_motif(self, lines)
-        self.aaseq = get_aaseq(self, lines)
+    def __init__(self, gen_name, url):
 
-def line_with_keyword(self, lines, arg):
-    
-    for line in lines:
-        if arg in line:
-            return line
-    return nan
+        resp = requests.get(url=url)
+        text = resp.text
 
-def get_entry(self, lines):
-    
-    line = line_with_keyword(self, lines, 'ENTRY')  
-    if  line != nan:
-        line = line.replace(' ','').replace('ENTRY','')
-        numbers = []
-        n = ''
-        for char in line:
-            if char.isdigit():
-                n += char
-            else:
-                if n.isdigit():
-                    numbers.append(n)
-                    n = ''
-        if n != '':
-            numbers.append(n)      
-        return numbers[0]
-    
-    else:
-        return nan
+        self.entry = self.get_entry(gen_name)
+        self.organism = self.get_organism(gen_name)
+        self.motif = self.get_motif(text)
+        self.aaseq = self.get_aaseq(text)
+        self.ntseq = self.get_ntseq(text)
 
-def get_organism(self, lines):
-    line = line_with_keyword(self, lines, 'ORGANISM')
+    def get_entry(self, gen_name):
+        entry = gen_name.split(':')[1]
+        return entry
 
-    if line != nan:
-        line = line.replace('ORGANISM','').strip()
-        return line.split(' ')[0]      
-    else:
-        return nan
+    def get_organism(self, gen_name):
+        organism = gen_name.split(':')[0]
+        return organism
 
-def get_motif(self, lines):
+    def get_motif(self, text):
+        regex = r"MOTIF\s+\w+:\s+.+"
+        motif = re.search(regex, text)
 
-    line = line_with_keyword(self, lines, 'MOTIF')
-    
-    if line != nan:
-        line = line.replace('MOTIF','').replace('Pfam:','').strip()
-        splitter = line.split(' ')
-        return splitter
-    else:
-        return nan
+        if motif:
+            motif = motif[0].replace('MOTIF', '').strip().split(' ')[1:]
+        else:
+            motif = None
+        return motif
 
-def get_aaseq(self, lines):
+    def get_aaseq(self, text):
+        regex = r"AASEQ\s+\d+((?:[\sA-Z]+)+)\n"
+        tmp_seq = re.search(regex, text)
 
-    line = line_with_keyword(self, lines, 'AASEQ')
+        if tmp_seq:
+            aaseq = re.sub("\s", "", tmp_seq[1])
+            return aaseq
+        else:
+            return None
 
-    if line != nan:
-        pass
-    else:
-        return nan
-    
-url = 'https://rest.kegg.jp/get/hsa:7314'
+    def get_ntseq(self, text):
+        regex = r"NTSEQ\s+\d+((?:[\satgc]+)+)\n"
+        tmp_seq = re.search(regex, text)
 
-resp = requests.get(url = url)
+        if tmp_seq:
+            ntseq = re.sub("\s", "", tmp_seq[1])
+            return ntseq
+        else:
+            return None
+
+    "График pie для частоты встречаемости нуклеотидов в ntseq"
+
+    def ntseq_pie(self, ax):
+
+        def absolute_value(val):
+            a = np.round(val/100.*freq.sum(), 0)
+            return a
+
+        seq = self.ntseq
+        nucl = 'atgc'
+        freq = []
+        for symbol in nucl:
+            freq.append(seq.count(symbol))
+        freq = np.array(freq)
+        labels = ['A', 'T', 'G', 'C']
+        explode = [0.05]*4
+
+        ax.pie(freq, labels=labels, autopct=absolute_value, explode=explode)
+        ax.legend(labels, bbox_to_anchor=(1, 1.025), loc="upper left")
+        ax.set_title(
+            'График pie для частоты встречаемости нуклеотидов в ntseq')
+
+        return ax
+
+    "График bar для частоты встречаемости аминокислот в aaseq"
+
+    def aaseq_bar(self, ax):
+        seq = self.aaseq
+        amins = 'ARNDCQEGHILKMFPSTWYV'
+
+        freq = []
+        labels = []
+        for symbol in amins:
+            freq.append(seq.count(symbol))
+            labels.append(symbol)
+
+        ind = [i for i in range(len(amins))]
+
+        ax.bar(ind, freq)
+        ax.set_xticks(ind)
+        ax.set_xticklabels(labels)
+        ax.set_xlabel('Аминокислоты')
+        ax.set_ylabel('Частота')
+        ax.set_title(
+            'График bar для частоты встречаемости аминокислот в aaseq')
+
+        return ax
+
+    def graphs(self):
+        fig = plt.figure()
+
+        ax1 = fig.add_subplot(121)
+        ax1 = self.ntseq_pie(ax1)
+
+        ax2 = fig.add_subplot(122)
+        ax2 = self.aaseq_bar(ax2)
+
+        plt.show()
+
+
+gen_name = 'hsa:7314'
+url = f'https://rest.kegg.jp/get/{gen_name}'
+
+resp = requests.get(url=url)
 text = resp.text
-arg1 = 'AASEQ'
-arg2 = 'NTSEQ'
 
+kek = Gene(gen_name, url)
+kek.graphs()
