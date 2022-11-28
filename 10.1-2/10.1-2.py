@@ -3,7 +3,6 @@ import re
 import matplotlib.pyplot as plt
 import numpy as np
 
-
 class Gene:
     def __init__(self, gen_name, url):
 
@@ -58,10 +57,6 @@ class Gene:
 
     def ntseq_pie(self, ax):
 
-        def absolute_value(val):
-            a = np.round(val/100.*freq.sum(), 0)
-            return a
-
         seq = self.ntseq
         nucl = 'atgc'
         freq = []
@@ -71,10 +66,9 @@ class Gene:
         labels = ['A', 'T', 'G', 'C']
         explode = [0.05]*4
 
-        ax.pie(freq, labels=labels, autopct=absolute_value, explode=explode)
+        ax.pie(freq, labels=labels, autopct = lambda val: np.round(val/100.*freq.sum(), 0), explode=explode)
         ax.legend(labels, bbox_to_anchor=(1, 1.025), loc="upper left")
-        ax.set_title(
-            'График pie для частоты встречаемости нуклеотидов в ntseq')
+        ax.set_title('График pie для частоты встречаемости нуклеотидов в ntseq')
 
         return ax
 
@@ -86,19 +80,18 @@ class Gene:
 
         freq = []
         labels = []
+        ind = range(len(amins))
+        
         for symbol in amins:
             freq.append(seq.count(symbol))
             labels.append(symbol)
-
-        ind = [i for i in range(len(amins))]
 
         ax.bar(ind, freq)
         ax.set_xticks(ind)
         ax.set_xticklabels(labels)
         ax.set_xlabel('Аминокислоты')
         ax.set_ylabel('Частота')
-        ax.set_title(
-            'График bar для частоты встречаемости аминокислот в aaseq')
+        ax.set_title('График bar для частоты встречаемости аминокислот в aaseq')
 
         return ax
 
@@ -113,12 +106,11 @@ class Gene:
 
         plt.show()
 
-
 gen_name = 'hsa:7314'
 url = f'https://rest.kegg.jp/get/{gen_name}'
 
 resp = requests.get(url=url)
-text = resp.text
 
-kek = Gene(gen_name, url)
-kek.graphs()
+g = Gene(gen_name, url)
+g.graphs()
+
