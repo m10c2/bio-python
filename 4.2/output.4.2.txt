@@ -1,0 +1,150 @@
+> Seq TNF like | Should find 3 types|frame:0, type:complete, start:0, stop:237,
+MSYESMIRIVELAENALPKKTGGAQGSRRSLFLSLISFLIVAGANTLFCLSHFGVICPQREEFPRALSLISQLAQAVES
+
+> Seq TNF like | Should find 3 types|frame:1, type:stop, start:1, stop:1,
+
+
+> Seq TNF like | Should find 3 types|frame:1, type:complete, start:7, stop:16,
+MKA
+
+> Seq TNF like | Should find 3 types|frame:1, type:stop, start:19, stop:115,
+SGLWSWPRTRSPRRQGGLRAPGGLCSSASSPS
+
+> Seq TNF like | Should find 3 types|frame:1, type:stop, start:118, stop:163,
+SWQAPIRSSACPTLE
+
+> Seq TNF like | Should find 3 types|frame:1, type:stop, start:166, stop:205,
+SAPRGKSSPGPSL
+
+> Seq TNF like | Should find 3 types|frame:1, type:empty, start:208, stop:235,
+SANWPRQSNH
+
+> Seq TNF like | Should find 3 types|frame:2, type:stop, start:2, stop:8,
+EL
+
+> Seq TNF like | Should find 3 types|frame:2, type:start, start:236, stop:239,
+M
+
+> Seq1 | Should find complete|frame:0, type:complete, start:0, stop:9,
+MYI
+
+> Seq1 | Should find complete|frame:1, type:empty, start:1, stop:7,
+CIS
+
+> Seq1 | Should find complete|frame:2, type:empty, start:2, stop:8,
+VYL
+
+> Seq2 | Should find complete|frame:0, type:empty, start:0, stop:9,
+NNAV
+
+> Seq2 | Should find complete|frame:1, type:complete, start:4, stop:10,
+MR
+
+> Seq2 | Should find complete|frame:2, type:stop, start:2, stop:2,
+
+
+> Seq2 | Should find complete|frame:2, type:empty, start:5, stop:8,
+CG
+
+> Seq3 | Should find complete|frame:0, type:empty, start:0, stop:15,
+PNGLWG
+
+> Seq3 | Should find complete|frame:1, type:empty, start:1, stop:16,
+RTVYGV
+
+> Seq3 | Should find complete|frame:2, type:complete, start:11, stop:17,
+MG
+
+> Seq4 | Should find start|frame:0, type:start, start:12, stop:24,
+MPGK
+
+> Seq4 | Should find start|frame:1, type:empty, start:1, stop:22,
+KLGPCPGK
+
+> Seq4 | Should find start|frame:2, type:empty, start:2, stop:23,
+SWAHARER
+
+> Seq5 | Should find start|frame:0, type:empty, start:0, stop:15,
+RSAHAR
+
+> Seq5 | Should find start|frame:1, type:start, start:10, stop:19,
+MPG
+
+> Seq5 | Should find start|frame:2, type:empty, start:2, stop:17,
+VCPCPG
+
+> Seq6 | Should find start|frame:0, type:empty, start:0, stop:18,
+KIGPCPG
+
+> Seq6 | Should find start|frame:1, type:empty, start:1, stop:19,
+RSAHARA
+
+> Seq6 | Should find start|frame:2, type:start, start:11, stop:20,
+MPG
+
+> Seq7 | Should find 2 types|frame:0, type:stop, start:0, stop:12,
+RNRQ
+
+> Seq7 | Should find 2 types|frame:0, type:empty, start:15, stop:18,
+PP
+
+> Seq7 | Should find 2 types|frame:1, type:empty, start:1, stop:16,
+GIGNDR
+
+> Seq7 | Should find 2 types|frame:2, type:stop, start:2, stop:5,
+E
+
+> Seq7 | Should find 2 types|frame:2, type:start, start:11, stop:20,
+MTA
+
+> Seq8 | Should find stop|frame:0, type:empty, start:0, stop:18,
+GSGINRR
+
+> Seq8 | Should find stop|frame:1, type:stop, start:1, stop:10,
+DPA
+
+> Seq8 | Should find stop|frame:1, type:empty, start:13, stop:16,
+TA
+
+> Seq8 | Should find stop|frame:2, type:empty, start:2, stop:17,
+IRHKPP
+
+> Seq9 | Should find stop|frame:0, type:empty, start:0, stop:18,
+ECARTAG
+
+> Seq9 | Should find stop|frame:1, type:empty, start:1, stop:16,
+SALGPP
+
+> Seq9 | Should find stop|frame:2, type:stop, start:2, stop:8,
+VR
+
+> Seq9 | Should find stop|frame:2, type:empty, start:11, stop:17,
+DRR
+
+> Seq10 | Should find nothing|frame:0, type:empty, start:0, stop:18,
+SALLLLA
+
+> Seq10 | Should find nothing|frame:1, type:empty, start:1, stop:16,
+APCCCL
+
+> Seq10 | Should find nothing|frame:2, type:empty, start:2, stop:17,
+RLVAAC
+
+> Seq11 | Should find nothing|frame:0, type:empty, start:0, stop:15,
+DQRAGQ
+
+> Seq11 | Should find nothing|frame:1, type:empty, start:1, stop:16,
+TSVLVR
+
+> Seq11 | Should find nothing|frame:2, type:empty, start:2, stop:17,
+PACWSG
+
+> Seq12 | Should find nothing|frame:0, type:empty, start:0, stop:18,
+IEVACWG
+
+> Seq12 | Should find nothing|frame:1, type:empty, start:1, stop:19,
+SKWRAGG
+
+> Seq12 | Should find nothing|frame:2, type:empty, start:2, stop:20,
+RSGVLGG
+

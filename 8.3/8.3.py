@@ -2,82 +2,67 @@ import numpy as np
 from Bio import pairwise2
 from Bio.pairwise2 import format_alignment
 
-r = lambda x,y,i,j: -1 if x[i] != y[j] else 1
+def compare(sym1, sym2):
+    if sym1 == sym2:
+        return 1
+    else:
+        return -1
 
-def find_solution(OPT, m, n): # m = lenx, n = leny
-
-    if m == 0 or n == 0:
-        return
-    
-    insert = OPT[m][n - 1] - 1 if n != 0 else float("inf")
-    align = (
-            OPT[m - 1][n - 1] + r(x, y, m - 1, n - 1)
-            if m != 0 and n != 0
-            else float("inf"))
-    delete = OPT[m - 1][n] - 1 if m != 0 else float("inf")
-
-    best_choice = max(insert, align, delete)
-
-    if best_choice == insert:
-            solution.append("insert_" + str(y[n - 1]))
-            return find_solution(OPT, m, n - 1)
-
-    elif best_choice == align:
-            solution.append("align_" + str(y[n - 1]))
-            return find_solution(OPT, m - 1, n - 1)
-
-    elif best_choice == delete:
-        solution.append("remove_" + str(x[m - 1]))
-        return find_solution(OPT, m - 1, n)
- 
 def alignment(x, y, gap):
     ly = len(y)
     lx = len(x)
 
-    OPT = [[0 for i in range(ly + 1)] for j in range(lx + 1)]
+    F = [ [0]*(lx + 1) for _ in range (ly + 1)]
 
-    for i in range(1, lx + 1):
-        OPT[i][0] = -i
-    for j in range(1, ly + 1):
-        OPT[0][j] = -j
+    for i in range(lx + 1):
+        F[0][i] = gap*i
+    for i in range(ly + 1):
+        F[i][0] = gap*i
 
-    for i in range (1, lx + 1):
-        for j in range(1, ly + 1):
-            OPT[i][j] = max(OPT[i-1][j-1] + r(x,y,i-1,j-1), OPT[i-1][j] + gap, OPT[i][j-1] + gap)
+    for i in range (1, ly + 1):
+        for j in range(1, lx + 1):
+            diag = F[i-1][j-1] + compare(x[j-1],y[i-1])
+            up = F[i-1][j] + gap
+            left = F[i][j-1] + gap
+            F[i][j] = max(diag, up, left)
+    
+    return F
 
-    find_solution(OPT,lx,ly)
-    return (OPT[lx][ly], solution[::-1])
+def reverse(F,x,y,gap):
+    i = len(y)
+    j = len(x)
+    al1, al2 = [],[]
 
-x = 'GG'
+    while (i != 0) or (j != 0):
+        if (i != 0) and (F[i][j] == F[i-1][j] + gap):
+            i -= 1
+            al1.append('_')
+            al2.append(y[i])
+        
+        elif (j != 0) and (F[i][j] == F[i][j-1] + gap):
+            j -= 1
+            al1.append(x[j])
+            al2.append('_')
+        
+        else:
+            i -= 1
+            j -= 1
+            al1.append(x[j])
+            al2.append(y[i])
+    
+    return [''.join(al1[::-1]),''.join(al2[::-1])]
+
+x = 'CATG'
 y = 'ATGG'
 
-solution = []
+print('manual','\n---------')
+nw = alignment(x,y,-1)
+steps = reverse(nw,x,y,-1)
+print('score = ',nw[len(y)][len(x)])
+print('steps =',steps,'\n')
 
-nw, solution  = alignment(x,y,-1)
-print('\nresult = ', nw)
-print('steps = ', solution)
-
+print('-----------\n','pairwise','\n---------')
 alignments = pairwise2.align.globalms(x, y, 1, -1, -1, -1)
-print('\n',format_alignment(*alignments[0]).replace(' ',''))
+print(format_alignment(*alignments[0]).replace(' ',''))
 print(alignments)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

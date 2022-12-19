@@ -106,9 +106,3 @@ class Gene:
         ax2 = self.aaseq_bar(ax2)
 
         plt.show()
-
-gen_name = 'hsa:7314'
-
-g = Gene(gen_name)
-g.graphs()
-
